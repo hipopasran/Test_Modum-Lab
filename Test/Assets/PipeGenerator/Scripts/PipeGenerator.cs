@@ -26,8 +26,8 @@ public class PipeGenerator : MonoBehaviour
     private float pipeWidth;
     [SerializeField]
     private int vMult;
-
-    public Texture Texture;
+    [SerializeField]
+    private Texture Texture;
 
 
     public List<SegmentPoints> Points = new List<SegmentPoints>();
