@@ -15,6 +15,7 @@ public class PipeGenerator : MonoBehaviour
     private Vector3[] vertices;
     private int[] triangles;
     private Vector2[] uv;
+    private List<SegmentPoints> points = new List<SegmentPoints>();
 
     [SerializeField]
     private int frequency;
@@ -28,9 +29,6 @@ public class PipeGenerator : MonoBehaviour
     private int vMult;
     [SerializeField]
     private Texture Texture;
-
-
-    public List<SegmentPoints> Points = new List<SegmentPoints>();
 
 
     private void Awake()
@@ -72,7 +70,7 @@ public class PipeGenerator : MonoBehaviour
             segment.transform.position = position;
             segment.transform.LookAt(position + spline.GetDirection(p * stepSize));
 
-            Points.Add(calculator.CalculatePoints(segment.transform, pipeSegmentCount, pipeRadius, pipeWidth));
+            points.Add(calculator.CalculatePoints(segment.transform, pipeSegmentCount, pipeRadius, pipeWidth));
         }
 
         SetVertices();
@@ -85,10 +83,10 @@ public class PipeGenerator : MonoBehaviour
     private void SetVertices()
     {
         int iDelta = pipeSegmentCount * 4;
-        for (int u = 1, i = iDelta; u <= Points.Count - 1; u++, i += iDelta)
+        for (int u = 1, i = iDelta; u <= points.Count - 1; u++, i += iDelta)
         {
-            SegmentPoints First = Points[u];
-            SegmentPoints Second = Points[u - 1];
+            SegmentPoints First = points[u];
+            SegmentPoints Second = points[u - 1];
 
             List<Vector3> dotsFirst = First.SegmentPointsOutside;
             List<Vector3> dotsSecond = Second.SegmentPointsOutside;
@@ -112,7 +110,7 @@ public class PipeGenerator : MonoBehaviour
                 }
             }
 
-            if (u == Points.Count - 1)
+            if (u == points.Count - 1)
             {
                 for (int v = 0, t = 0; v < pipeSegmentCount; v++, t += 4)
                 {
